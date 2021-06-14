@@ -11,7 +11,7 @@ def excel_columns_calculator(excel_file: InMemoryUploadedFile, column_names: lis
     :param column_names: Name of columns from excel file which user wants to calculate.
     :return: Returns dict with name of excel file and sums and averages of given columns.
     """
-    filename = str(excel_file).rstrip('.xls')
+    filename = str(excel_file)
     file_summary = {
         'file': filename,
         'summary': []
@@ -27,10 +27,10 @@ def excel_columns_calculator(excel_file: InMemoryUploadedFile, column_names: lis
         df_columns_to_calculate = dataframe.isin(column_names).any()
 
         for col_key, col_value in df_columns_to_calculate.items():
-            if col_value:
+            if col_value or col_key in column_names:
                 right_column_name = ''
                 for col_name in column_names:
-                    if col_name in dataframe[[col_key]].values:
+                    if col_name in dataframe[[col_key]].values or col_name == col_key:
                         right_column_name = col_name
 
                 col_values_to_numeric = dataframe[[col_key]].apply(pd.to_numeric, errors='coerce')
