@@ -32,7 +32,7 @@ class CalculateExcelAPITests(TestCase):
         self.excel_file_io = BytesIO()
         with pd.ExcelWriter(self.excel_file_io) as writer:
             test_df.to_excel(writer, engine='xlsxwriter')
-        self.excel_file_io.name = 'test_excel_file.xls'
+        self.excel_file_io.name = 'test_excel_file.xlsx'
         self.excel_file_io.size = self.excel_file_io.getbuffer().nbytes
         self.excel_file_io.seek(0)
 
