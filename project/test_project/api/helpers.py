@@ -17,11 +17,15 @@ def excel_columns_calculator(excel_file: InMemoryUploadedFile, column_names: lis
         'summary': []
     }
 
-    excel_file = pd.ExcelFile(excel_file)
+    if filename.endswith('.xls'):
+        excel_engine = 'xlrd'
+    else:
+        excel_engine = 'openpyxl'
+    excel_file = pd.ExcelFile(excel_file, engine=excel_engine)
     excel_sheet_names = excel_file.sheet_names
 
     for sheet in excel_sheet_names:
-        dataframe = pd.read_excel(excel_file, sheet_name=sheet)
+        dataframe = pd.read_excel(excel_file, engine=excel_engine, sheet_name=sheet)
         dataframe = dataframe.astype(str).apply(lambda x: x.str.strip())
 
         df_columns_to_calculate = dataframe.isin(column_names).any()

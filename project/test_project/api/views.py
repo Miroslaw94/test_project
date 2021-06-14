@@ -1,4 +1,5 @@
 import json
+from zipfile import BadZipFile
 
 from django.utils.datastructures import MultiValueDictKeyError
 
@@ -43,7 +44,7 @@ class CalculateView(APIView):
 
         try:
             return Response(excel_columns_calculator(excel_file, column_names), status=status.HTTP_200_OK)
-        except ValueError:
+        except (ValueError, OSError, BadZipFile):
             message = {
                 "error": "Uploaded file is not a recognized excel file. "
             }
